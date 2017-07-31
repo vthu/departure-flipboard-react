@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <!--
+      manifest.json provides metadata used when your web app is added to the
+      homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+    <script
+  src="http://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+     <script>
+      var FlipClock = function () {
+        var isPaused = false,
+        saveSec, saveMin, saveHou,
+        Second, Minute, Hour,
+        timeoutCallback,
+        flipClock = $( "#flipclock" );
+
+        function addZeros( num, no ) {
+            var str   = num.toString(),
+                zero  = "",
+                len   = str.length,
+                total = no + 1;
+
+            if ( len < total ) {
+                var zeroTotal = total - len, i;
+
+                for ( i = 1; i <= zeroTotal; i++ ) {
+                    zero += "0";
+                }
+
+                str = zero + str;
+            }
+            return str;
+        }
+
+        function init() {
+            isPaused = false;
+            Second = new Control( '.flip-second' );
+            Minute = new Control( '.flip-minute' );
+            Hour   = new Control( '.flip-hour' );
+
+            Hour._setValue = Hour.setValue;
+            Hour.setValue = function( hours ) {
+                this._setValue( hours );
+
+                var apm = "AM";
+                if ( hours > 12 ) {
+                    hours = hours - 12;
+                    apm = "PM";
+                } else if ( hours == 12 ) {
+                    apm = "PM";
+                }
+
+                var nextli = this.els.eq( this.curr );
+                nextli.find( ".flip-apm" ).html( apm );
+            };
+        }
+
+        function getTime() {
+            var currentTime = new Date();
+
+            return {
+                value:   currentTime,
+                seconds: currentTime.getSeconds(),
+                minutes: currentTime.getMinutes(),
+                hours:   currentTime.getHours()
+            }
+        }
+
+        function start() {
+            var time = getTime();
+
+            saveSec = time.seconds;
+            saveMin = time.minutes;
+            saveHou = time.hours;
+            Second.process( time.seconds );
+            Minute.process( time.minutes );
+            Hour.process( time.hours );
+
+            clearTimeout( timeoutCallback );
+            timeoutCallback = setTimeout( engine, 1000 );
+        }
+
+        function pause() {
+            isPaused = true;
+            clearTimeout( timeoutCallback );
+        }
+
+        function resume() {
+            isPaused = false;
+            engine();
+        }
+
+        function engine() {
+            if ( isPaused ) return;
+            clearTimeout( timeoutCallback );
+            timeoutCallback = setTimeout( engine, 1000 );
+
+            var time = getTime();
+
+            if ( saveSec != time.seconds ) {
+                saveSec = time.seconds;
+                Second.process( time.seconds );
+            }
+
+            if ( saveMin != time.minutes ) {
+                saveMin = time.minutes;
+                Minute.process( time.minutes );
+            }
+
+            if ( saveHou != time.hours ) {
+                saveHou = time.hours;
+                Hour.process( time.hours );
+            }
+        }
+
+        function Control( elSelector ) {
+            this.el   = flipClock.find( elSelector );
+            this.els  = this.el.find( 'li' );
+            this.curr = 0;
+        }
+
+        Control.prototype = {
+          process: function( value ) {
+            var curli = this.els.filter( '.active' );
+            if ( curli.is( ":last-child" ) ) {
+                this.els.removeClass( "before" );
+                curli.addClass( "before" ).removeClass( "active" );
+                curli = this.els.eq( 0 );
+                curli.addClass( "active" );
+                this.curr = 0;
+            } else {
+                this.els.removeClass( "before" );
+                curli.addClass( "before" ).removeClass( "active" );
+                this.els.eq( 1 ).addClass( "active" );
+                this.curr = 1;
+            }
+            this.setValue( value );
+          },
+          setValue: function( value ) {
+              var formatedValue = addZeros( value, 1 ),
+                  nextli = this.els.eq( this.curr );
+
+              nextli.find( ".flip-text" ).html( formatedValue );
+          }
+        };
+
+        return {
+            init: init,
+            start: start,
+            pause: pause,
+            resume: resume,
+        }
+      };
+
+      window.onload = function() {
+        var flipClock = FlipClock();
+        flipClock.init();
+        flipClock.start();
+      }
+    </script> 
+  </body>
+</html>
