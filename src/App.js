@@ -1,20 +1,18 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import DepartureBoard from './DepartureBoard';
+import FlipBoard from './FlipBoard';
 
 class App extends Component {
   state = {
-    first: 0,
-    second: 1,
-    displayText: 'A',
-    previousText: 'Z'
+    isFirstliActive: 0,
+    displayText: 'HIPHOP',
+    previousText: 'ZZZZZZ'
   }
 
-  updateState() {
+  updateFlipBoardState() {
     this.setState({
-      first: !this.state.first,
-      second: !this.state.second,
+      isFirstliActive: !this.state.isFirstliActive,
       displayText: this.textInput.value,
       previousText: this.state.displayText
     });
@@ -24,11 +22,12 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           <h2>Departure</h2>
-          <input type="text" ref={input => this.textInput = input} />
-          <button onClick={() => this.updateState()}>Done</button>
-          <DepartureBoard { ...this.state }/>
+          <div className="titleForm">
+            <input type="text" ref={input => this.textInput = input} /><br />
+            <button onClick={() => this.updateFlipBoardState()}>Update Flippers</button>
+          </div>
+          <FlipBoard { ...this.state }/>
         </div>
       </div>
     );
