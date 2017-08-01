@@ -41,7 +41,7 @@
         integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
         crossorigin="anonymous">
     </script>
-    <script>
+     <!-- <script>
         var FlipClock = function () {
             var isPaused = false,
                 saveSec, saveMin, saveHou,
@@ -128,7 +128,7 @@
             function engine() {
                 if ( isPaused ) return;
                 clearTimeout( timeoutCallback );
-                timeoutCallback = setTimeout( engine, 1000 );
+                timeoutCallback = setTimeout( engine, 5000 );
 
                 var time = getTime();
 
@@ -194,6 +194,6 @@
             flipClock.init();
             flipClock.start();
         });
-    </script> 
+    </script>   -->
   </body>
 </html>

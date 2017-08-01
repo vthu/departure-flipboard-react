@@ -11,14 +11,14 @@ class DepartureBoard extends React.PureComponent {
         return (
             <div id="flipclock">
 
-                <div className="flip-pane flip-pane-1">
+                {/*<div className="flip-pane flip-pane-1">
                     <FlipItem type="flip-hour" />
                     <FlipItem type="flip-minute" />
 
-                </div>{/*--/flip-pane-- */}
+                </div>*/}{/*--/flip-pane-- */}
 
                 <div className="flip-pane flip-pane-2">
-                    <FlipItem type="flip-second" />
+                    <FlipItem type="flip-second" { ...this.props }/>
                 </div>{/*--/flip-pane-- */}
 
             </div>

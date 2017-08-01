@@ -65,10 +65,11 @@ body {
   height: 100%;
   -webkit-perspective: 900px;
   -moz-perspective: 900px;
-  -ms-perspective: 900px;
-  perspective: 900px;
+  -ms-perspective: 900px; 
+  perspective: 900px; 
 }
-.flip-pane div {
+
+ .flip-pane div {
   z-index: 1;
   position: absolute;
   left: 0;
@@ -80,7 +81,8 @@ body {
 }
 .flip-pane-2 div {
   height: 72px;
-}
+} 
+
 .flip-pane .flip-shadow {
   position: absolute;
   width: 100%;
